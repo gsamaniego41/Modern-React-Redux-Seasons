@@ -1,7 +1,22 @@
 import React from "react";
 
-const Hooks = () => {
-  return <h1>Hooks</h1>;
-};
+class Hooks extends React.Component {
+  state = {resource: "posts"};
+  render() {
+    return (
+      <div>
+        <div>
+          <button onClick={() => this.setState({resource: "posts"})}>
+            Posts
+          </button>
+          <button onClick={() => this.setState({resource: "todos"})}>
+            Todos
+          </button>
+        </div>
+        {this.state.resource}
+      </div>
+    );
+  }
+}
 
 export default Hooks;
