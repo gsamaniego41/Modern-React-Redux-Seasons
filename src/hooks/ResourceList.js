@@ -43,7 +43,13 @@ const ResourceList = ({resource}) => {
   Defining and invoking in a single step
   */
 
-  return <div>{resources.length}</div>;
+  return (
+    <ul>
+      {resources.map(record => (
+        <li key={record.id}>{record.title}</li>
+      ))}
+    </ul>
+  );
 };
 
 export default ResourceList;
