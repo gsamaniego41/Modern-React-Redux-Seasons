@@ -26,6 +26,23 @@ const ResourceList = ({resource}) => {
   //  user clicks Posts button -> [resource] value becomes ['posts']
   //  but if user clicks Posts button again it won't rerender, bec value of [resource] didn't change
 
+  // *useEffect GOTCHA: can't use async functions or Promises.
+  // we have to define a second function like fetchResource, then pass it as a callback to useEffect
+
+  /* ======== Alternative (same result) ========
+  useEffect(() => {
+    (async resource => {
+    const response = await axios.get(
+      `https://jsonplaceholder.typicode.com/${resource}`
+    );
+    setResources(response.data);
+    })(resource) *IMMEDIATELY CALLS THE ASYNC FUNC*
+  }, [resource])
+
+  Ex: (() => console.log('hi'))()
+  Defining and invoking in a single step
+  */
+
   return <div>{resources.length}</div>;
 };
 
