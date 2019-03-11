@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 
 const ResourceList = ({resource}) => {
+  // {resource} = prop from Hooks.js --> 'posts' / 'todos'
   // any time ResourceList first gets rendered, or receives a new value for resource (posts/todos),
   // we want to call fetchResource, then eventually update our state
   const [resources, setResources] = useState([]);
@@ -18,7 +19,12 @@ const ResourceList = ({resource}) => {
 
   useEffect(() => {
     fetchResource(resource);
-  }, []);
+  }, [resource]); //fetcResrouce will run the first time this comp mounts
+  // Every time what's inside [] changes, the callback (fetchResource) gets invoked
+  // ex: by default [resource] is set to ['posts'] bec that's what was set in Hooks.js -> useState('posts')
+  //  user clicks Todos button -> [resource] value becomes ['todos']
+  //  user clicks Posts button -> [resource] value becomes ['posts']
+  //  but if user clicks Posts button again it won't rerender, bec value of [resource] didn't change
 
   return <div>{resources.length}</div>;
 };
