@@ -1,10 +1,35 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 
+// Section 25, Lecture 326: Code Reuse
+// resource prop (input) --> Hook stuff --> resources array (output)
+const useResources = resource => {
+  const [resources, setResources] = useState([]);
+
+  useEffect(() => {
+    (async resource => {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/${resource}`
+      );
+      setResources(response.data);
+    })(resource);
+  }, [resource]);
+
+  return resources;
+
+  /* ===== Benefits =====
+  - This function has NO tie to any specific component
+  - We can REUSE this function anywhere else inside our project
+  - We can REUSE it in a different project 
+  */
+};
+
 const ResourceList = ({resource}) => {
   // {resource} = prop from Hooks.js --> 'posts' / 'todos'
   // any time ResourceList first gets rendered, or receives a new value for resource (posts/todos),
   // we want to call fetchResource, then eventually update our state
+
+  /* 
   const [resources, setResources] = useState([]);
 
   // useEffect allows us to use lifecycle methods in a func comp
@@ -19,7 +44,10 @@ const ResourceList = ({resource}) => {
 
   useEffect(() => {
     fetchResource(resource);
-  }, [resource]); //fetcResrouce will run the first time this comp mounts
+  }, [resource]);  
+  */
+
+  //fetcResrouce will run the first time this comp mounts
   // Every time what's inside [] changes, the callback (fetchResource) gets invoked
   // ex: by default [resource] is set to ['posts'] bec that's what was set in Hooks.js -> useState('posts')
   //  user clicks Todos button -> [resource] value becomes ['todos']
@@ -43,6 +71,7 @@ const ResourceList = ({resource}) => {
   Defining and invoking in a single step
   */
 
+  const resources = useResources(resource);
   return (
     <ul>
       {resources.map(record => (
