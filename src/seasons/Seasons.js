@@ -1,20 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import SeasonDisplay from "./SeasonDisplay";
 import Loader from "./Loader";
+import useLocation from "./useLocation";
 
 const Seasons = () => {
-  // state = {lat: null, errorMessage: ''}   --> useState
-  const [lat, setLat] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      position => setLat({lat: position.coords.latitude}),
-      err => setErrorMessage({errorMessage: err.message})
-    );
-  }, []);
-  /* empty array means only run this function one time (in total)
-   for the entire lifecycle of this component */
+  const [lat, errorMessage] = useLocation();
 
   let content;
   if (errorMessage) {
